@@ -5,6 +5,25 @@
     <Icon name="back" style="color: red;"></Icon>
     <Input v-model="val" /> <span>{{val}}</span>
     <Input :disabled="true" />
+
+    <Tabs>
+        <TabPane label="首页">
+            <div>首页</div>
+        </TabPane>
+        <TabPane label="详情">
+            <div>详情</div>
+        </TabPane>
+        <TabPane label="个人中心">
+            <div>个人中心</div>
+        </TabPane>
+    </Tabs>
+
+    <Poptip title="标题" content="内容!!!!!!!!!">
+        <Button>show poptip</Button>
+    </Poptip>
+    <Poptip title="标题" content="内容!!!!!!!!!" position="top-start">
+        <Button>show poptip</Button>
+    </Poptip>
 </div>
 </template>
 
@@ -12,13 +31,20 @@
 import Button from '../components/button';
 import Icon from '../components/icon';
 import Input from '../components/input';
+import Tabs from '../components/tabs';
+import Poptip from '../components/poptip'
+
+const TabPane = Tabs.TabPane;
 
 export default {
     name: 'Demo',
     components: {
         Button: Button,
         Icon: Icon,
-        Input: Input
+        Input: Input,
+        Tabs: Tabs,
+        TabPane: TabPane,
+        Poptip: Poptip,
     },
     data() {
         return {
