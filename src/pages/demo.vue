@@ -39,6 +39,12 @@
             <h1>标题123</h1>
         </template>
     </Tooltip>
+    <br/>
+    <ButtonGroup style="margin-top: 5px;">
+        <Button icon="setting" >按钮</Button>
+        <Button icon="setting" >按钮</Button>
+        <Button icon="loading" icon-position="right" >按钮</Button>
+    </ButtonGroup>
 </div>
 </template>
 
@@ -51,6 +57,7 @@ import Poptip from '../components/poptip';
 import Tooltip from '../components/tooltip';
 
 const TabPane = Tabs.TabPane;
+const ButtonGroup = Button.ButtonGroup;
 
 export default {
     name: 'Demo',
@@ -62,6 +69,7 @@ export default {
         TabPane: TabPane,
         Poptip: Poptip,
         Tooltip: Tooltip,
+        ButtonGroup: ButtonGroup
     },
     data() {
         return {
