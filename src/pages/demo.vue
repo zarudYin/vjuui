@@ -24,6 +24,15 @@
     <Poptip title="标题" content="内容!!!!!!!!!" position="top-start">
         <Button>show poptip</Button>
     </Poptip>
+    <Poptip content="内容!!!!!!!!!" position="top">
+        <Button>show poptip</Button>
+    </Poptip>
+    <Poptip content="内容!!!!!!!!!" position="bottom" trigger="hover">
+        <Button>show poptip</Button>
+        <template slot="title">
+            <h1>标题123</h1>
+        </template>
+    </Poptip>
 </div>
 </template>
 
@@ -32,7 +41,7 @@ import Button from '../components/button';
 import Icon from '../components/icon';
 import Input from '../components/input';
 import Tabs from '../components/tabs';
-import Poptip from '../components/poptip'
+import Poptip from '../components/poptip';
 
 const TabPane = Tabs.TabPane;
 
@@ -44,7 +53,7 @@ export default {
         Input: Input,
         Tabs: Tabs,
         TabPane: TabPane,
-        Poptip: Poptip,
+        Poptip: Poptip
     },
     data() {
         return {

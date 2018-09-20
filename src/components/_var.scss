@@ -17,6 +17,11 @@ $red: #f1453d;
 $grey: #eee;
 $blue: #2d8cf0;
 
-.box-shadow {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.4s;
+}
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
 }
