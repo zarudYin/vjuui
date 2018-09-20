@@ -75,7 +75,9 @@ export default {
             }
         },
         handleClickOutside() {
-            this.visible = false;
+            if (this.trigger === 'click') {
+                this.visible = false;
+            }
         }
     }
 };

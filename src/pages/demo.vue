@@ -33,6 +33,12 @@
             <h1>标题123</h1>
         </template>
     </Poptip>
+    <Tooltip content="Tooltip123123213213">
+        <Button>show tooltip</Button>
+        <template slot="title">
+            <h1>标题123</h1>
+        </template>
+    </Tooltip>
 </div>
 </template>
 
@@ -42,6 +48,7 @@ import Icon from '../components/icon';
 import Input from '../components/input';
 import Tabs from '../components/tabs';
 import Poptip from '../components/poptip';
+import Tooltip from '../components/tooltip';
 
 const TabPane = Tabs.TabPane;
 
@@ -53,7 +60,8 @@ export default {
         Input: Input,
         Tabs: Tabs,
         TabPane: TabPane,
-        Poptip: Poptip
+        Poptip: Poptip,
+        Tooltip: Tooltip,
     },
     data() {
         return {
