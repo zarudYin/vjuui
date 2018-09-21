@@ -6,12 +6,7 @@
 
 <script>
 export default {
-    name: 'ButtonGroup',
-    mounted() {
-        debugger;
-
-        var a = this;
-    }
+    name: 'ButtonGroup'
 };
 </script>
 

@@ -45,6 +45,12 @@
         <Button icon="setting" >按钮</Button>
         <Button icon="loading" icon-position="right" >按钮</Button>
     </ButtonGroup>
+
+    <Select @on-select="handleSelect" placeholder="please select">
+        <Option value="1">哈哈哈</Option>
+        <Option value="2">呵呵呵</Option>
+        <Option value="3">嘿嘿嘿</Option>
+    </Select>
 </div>
 </template>
 
@@ -55,9 +61,11 @@ import Input from '../components/input';
 import Tabs from '../components/tabs';
 import Poptip from '../components/poptip';
 import Tooltip from '../components/tooltip';
+import Select from '../components/select';
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.ButtonGroup;
+const Option = Select.Option;
 
 export default {
     name: 'Demo',
@@ -69,12 +77,19 @@ export default {
         TabPane: TabPane,
         Poptip: Poptip,
         Tooltip: Tooltip,
-        ButtonGroup: ButtonGroup
+        ButtonGroup: ButtonGroup,
+        Select: Select,
+        Option: Option,
     },
     data() {
         return {
             val: ''
         };
+    },
+    methods: {
+        handleSelect(option) {
+            console.log(option);
+        }
     }
 };
 </script>
