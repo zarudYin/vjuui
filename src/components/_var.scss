@@ -23,6 +23,45 @@ $blue: #2d8cf0;
     transition: opacity 0.4s;
 }
 
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
     opacity: 0;
+}
+
+.drop-enter-active, .drop-leave-active {
+    transform-origin: center top 0;
+    animation-play-state: running;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.3s;
+}
+
+.drop-enter-active {
+    animation-name: dropIn;
+}
+
+.drop-leave-active {
+    animation-name: dropOut;
+}
+
+@keyframes dropIn {
+    from {
+        opacity: 0;
+        transform: scaleY(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+@keyframes dropOut {
+    from {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+    to {
+        opacity: 0;
+        transform: scaleY(0.8);
+    }
 }

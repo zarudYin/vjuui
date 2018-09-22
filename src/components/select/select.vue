@@ -1,14 +1,16 @@
 <template>
-    <div class="vju-select" v-clickoutside="handleClickOutside">
+    <div :class="['vju-select', {'vju-select-visible': visible}]" v-clickoutside="handleClickOutside">
         <div class="vju-select-value" @click="handleClick">
             <input class="vju-select-input" readonly :placeholder="placeholder" v-model="selectedLabel" />
             <Icon name="moreunfold"></Icon>
         </div>
-        <div class="vju-select-drop" v-show="visible">
-            <ul>
-                <slot></slot>
-            </ul>
-        </div>
+        <transition name="drop">
+            <div class="vju-select-drop" v-show="visible">
+                <ul>
+                    <slot></slot>
+                </ul>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -67,6 +69,12 @@ export default {
     width: 200px;
 }
 
+.vju-select-visible {
+    .vju-icon-moreunfold {
+        transform: rotate(180deg);
+    }
+}
+
 .vju-select-input {
     outline: 0;
     width: 100%;
@@ -82,7 +90,7 @@ export default {
         border-color: $border-color-hover;
     }
 
-    + .vju-icon {
+    + .vju-icon-moreunfold {
         position: absolute;
         top: 50%;
         right: 8px;
