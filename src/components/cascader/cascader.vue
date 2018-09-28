@@ -1,11 +1,11 @@
 <template>
-    <div :class="['vju-select', {'vju-select-visible': visible}]" v-clickoutside="handleClickOutside">
-        <div class="vju-select-value" @click="handleClick">
-            <input class="vju-select-input" readonly :placeholder="placeholder" v-model="selectedLabel" />
+    <div :class="['vju-cascader', {'vju-cascader-visible': visible}]" v-clickoutside="handleClickOutside">
+        <div class="vju-cascader-value" @click="handleClick">
+            <input class="vju-cascader-input" readonly :placeholder="placeholder" v-model="selectedLabel" />
             <Icon name="moreunfold"></Icon>
         </div>
         <transition name="drop">
-            <div class="vju-select-drop" v-show="visible">
+            <div class="vju-cascader-drop" v-show="visible">
                 <ul>
                     <slot></slot>
                 </ul>
@@ -19,13 +19,14 @@ import Icon from '../icon';
 import clickoutside from '../../directives/clickOutside.js';
 
 export default {
-    name: 'Select',
+    name: 'Cascader',
     components: { Icon },
     directives: { clickoutside },
     props: {
         value: [String, Number],
         label: [String, Number],
-        placeholder: String
+        placeholder: String,
+        data: Array
     },
     data() {
         return {
@@ -52,9 +53,7 @@ export default {
         }
     },
     mounted() {
-        // debugger;
 
-        var a = this;
     }
 };
 </script>
@@ -63,19 +62,19 @@ export default {
 <style lang="scss">
 @import '../var';
 
-.vju-select {
+.vju-cascader {
     display: inline-block;
     position: relative;
     width: 200px;
 }
 
-.vju-select-visible {
+.vju-cascader-visible {
     .vju-icon-moreunfold {
         transform: rotate(180deg);
     }
 }
 
-.vju-select-input {
+.vju-cascader-input {
     outline: 0;
     width: 100%;
     height: $input-height;
@@ -100,7 +99,7 @@ export default {
     }
 }
 
-.vju-select-drop {
+.vju-cascader-drop {
     position: absolute;
     width: 100%;
     max-height: 200px;

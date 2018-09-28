@@ -62,6 +62,7 @@ import Tabs from '../components/tabs';
 import Poptip from '../components/poptip';
 import Tooltip from '../components/tooltip';
 import Select from '../components/select';
+import Cascader from '../components/Cascader';
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.ButtonGroup;
@@ -80,6 +81,7 @@ export default {
         ButtonGroup: ButtonGroup,
         Select: Select,
         Option: Option,
+        Cascader,
     },
     data() {
         return {

@@ -18,9 +18,12 @@ $red: #f1453d;
 $grey: #eee;
 $blue: #2d8cf0;
 
+$transitionTime: 0.4s;
+$animationTime: 0.3s;
+
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.4s;
+    transition: opacity $transitionTime;
 }
 
 .fade-enter,
@@ -33,7 +36,7 @@ $blue: #2d8cf0;
     animation-play-state: running;
     animation-fill-mode: both;
     animation-timing-function: ease-in-out;
-    animation-duration: 0.3s;
+    animation-duration: $animationTime;
 }
 
 .drop-enter-active {
