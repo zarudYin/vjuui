@@ -6,9 +6,9 @@
         </div>
         <transition name="drop">
             <div class="vju-cascader-drop" v-show="visible">
-                <ul>
-                    <slot></slot>
-                </ul>
+                <div>
+                    <Caspanel :data="data"></Caspanel>
+                </div>
             </div>
         </transition>
     </div>
@@ -16,22 +16,24 @@
 
 <script>
 import Icon from '../icon';
+import Caspanel from './caspanel';
 import clickoutside from '../../directives/clickOutside.js';
 
 export default {
     name: 'Cascader',
-    components: { Icon },
+    components: { Icon, Caspanel },
     directives: { clickoutside },
     props: {
-        value: [String, Number],
-        label: [String, Number],
+        data: {
+            type: Array,
+            default() {
+                return [];
+            }
+        },
         placeholder: String,
-        data: Array
     },
     data() {
         return {
-            selectedValue: this.value,
-            selectedLabel: this.label,
             visible: false
         };
     },
@@ -39,21 +41,9 @@ export default {
         handleClick() {
             this.visible = !this.visible;
         },
-        handleSelect(option, isEmit = true) {
-            let { value, label } = option;
-
-            this.selectedValue = value;
-            this.selectedLabel = label;
-            this.visible = false;
-
-            isEmit && this.$emit('on-select', option);
-        },
         handleClickOutside() {
             this.visible = false;
         }
-    },
-    mounted() {
-
     }
 };
 </script>
@@ -101,7 +91,7 @@ export default {
 
 .vju-cascader-drop {
     position: absolute;
-    width: 100%;
+    width: auto;
     max-height: 200px;
     overflow: auto;
     margin: 5px 0;
@@ -111,12 +101,6 @@ export default {
     border-radius: $border-radius;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
     z-index: 900;
-
-    > ul {
-        min-width: 100%;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
+    white-space: nowrap;
 }
 </style>
