@@ -1,11 +1,14 @@
 <template>
     <span>
         <ul class="vju-caspanel-menu">
-            <li class="vju-caspanel-menu-item" v-for="item in data" :key="getKey()" @click.stop="handleItemClcik(item)">
-                {{item.label}}
-                <Icon name="more" v-if="item.children && item.children.length" />
+            <li :class="['vju-caspanel-menu-item', {'vju-caspanel-menu-item-active': currentValue && currentValue === item.value }]"
+                v-for="item in data"
+                :key="item.value"
+                @click.stop="handleItemClcik(item)">
+                    {{item.label}}
+                    <Icon name="more" v-if="item.children && item.children.length" />
             </li>
-        </ul><Caspanel v-if="subData && subData.length" :data="subData"></Caspanel>
+        </ul><Caspanel v-if="subData && subData.length" :data="subData" :value="subValue"></Caspanel>
     </span>
 </template>
 
@@ -24,23 +27,24 @@ export default {
                 return [];
             }
         },
+        value: {
+            type: Array,
+            default() {
+                return [];
+            }
+        },
         disabled: Boolean
-        // trigger: String,
     },
     data() {
         return {
-            selected: [],
-            subData: []
+            selectedItem: undefined,
+            subData: [],
+            currentValue: this.value[0]
         };
     },
     computed: {
-        showArrow() {
-            return this.data.children && this.data.children.length;
-        }
-    },
-    watch: {
-        data() {
-            this.subData = [];
+        subValue() {
+            return this.value.slice(1);
         }
     },
     methods: {
@@ -48,12 +52,38 @@ export default {
             return key++;
         },
         handleItemClcik(item) {
+            let last = true;
+
             if (item.children && item.children.length) {
                 this.subData = item.children;
+                last = false;
             }
+
+            this.selectedItem = item;
+            this.currentValue = item.value;
+            this.emitUpdate([item], last);
+        },
+        emitUpdate(selected, isLast) {
+            this.$parent.updateSelected(selected, isLast);
+        },
+        updateSelected(selected, isLast) {
+            this.$parent.updateSelected([this.selectedItem].concat(selected), isLast);
         }
     },
-    mounted() {}
+    watch: {
+        data() {
+            this.subData = [];
+        },
+        value() {
+            this.currentValue = this.value[0];
+
+            if (this.currentValue) {
+                this.subData = this.data.filter(item => item.value === this.currentValue)[0].children;
+            } else {
+                this.subData = []
+            }
+        }
+    }
 };
 </script>
 

@@ -1,13 +1,13 @@
 <template>
     <div :class="['vju-cascader', {'vju-cascader-visible': visible}]" v-clickoutside="handleClickOutside">
         <div class="vju-cascader-value" @click="handleClick">
-            <input class="vju-cascader-input" readonly :placeholder="placeholder" v-model="selectedLabel" />
+            <input class="vju-cascader-input" readonly :placeholder="placeholder" :value="inputValue"/>
             <Icon name="moreunfold"></Icon>
         </div>
         <transition name="drop">
             <div class="vju-cascader-drop" v-show="visible">
                 <div>
-                    <Caspanel :data="data"></Caspanel>
+                    <Caspanel :data="data" :value="tmpSelectedValue"></Caspanel>
                 </div>
             </div>
         </transition>
@@ -30,12 +30,26 @@ export default {
                 return [];
             }
         },
-        placeholder: String,
+        value: {
+            type: Array,
+            default() {
+                return [];
+            }
+        },
+        placeholder: String
     },
     data() {
         return {
-            visible: false
+            visible: false,
+            selected: [],
+            selectedValue: this.value,
+            tmpSelectedValue: this.value
         };
+    },
+    computed: {
+        inputValue() {
+            return this.selected.map(item => item.label).join(' / ');
+        }
     },
     methods: {
         handleClick() {
@@ -43,6 +57,23 @@ export default {
         },
         handleClickOutside() {
             this.visible = false;
+        },
+        updateSelected(selected, isLast) {
+            this.tmpSelectedValue = selected.map(item => item.value);
+
+            if (isLast) {
+                this.selectedValue = [...this.tmpSelectedValue];
+                this.visible = false;
+                this.selected = selected;
+            }
+        }
+    },
+    watch: {
+        visible(val) {
+            if (val) {
+                console.log(this.selectedValue);
+                this.tmpSelectedValue = [...this.selectedValue];
+            }
         }
     }
 };
