@@ -41,8 +41,8 @@
     </Tooltip>
     <br/>
     <ButtonGroup style="margin-top: 5px;">
-        <Button icon="setting" >按钮</Button>
-        <Button icon="setting" >按钮</Button>
+        <Button icon="setting" @click="showMsg">message</Button>
+        <Button icon="setting" @click="showModal">modal</Button>
         <Button icon="loading" icon-position="right" >按钮</Button>
     </ButtonGroup>
 
@@ -53,6 +53,10 @@
     </Select>
 
     <Cascader :data="data" placeholder="please select"></Cascader>
+
+    <Modal v-model="modalVisible" title="这是标题!" @on-ok="handleOk" draggable>
+        哈哈哈哈哈哈哈
+    </Modal>
 </div>
 </template>
 
@@ -65,6 +69,8 @@ import Poptip from '../components/poptip';
 import Tooltip from '../components/tooltip';
 import Select from '../components/select';
 import Cascader from '../components/Cascader';
+import Message from '../components/message';
+import Modal from '../components/modal';
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.ButtonGroup;
@@ -83,11 +89,13 @@ export default {
         ButtonGroup: ButtonGroup,
         Select: Select,
         Option: Option,
-        Cascader
+        Cascader,
+        Modal
     },
     data() {
         return {
             val: '',
+            modalVisible: false,
             data: [
                 {
                     value: 'beijing',
@@ -143,6 +151,15 @@ export default {
     methods: {
         handleSelect(option) {
             console.log(option);
+        },
+        showMsg() {
+            Message.info('哈哈哈哈');
+        },
+        showModal() {
+            this.modalVisible = true;
+        },
+        handleOk() {
+            console.log('ok');
         }
     }
 };

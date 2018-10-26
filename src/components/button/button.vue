@@ -1,5 +1,5 @@
 <template>
-    <button :class="['vju-btn', `vju-btn-${iconPosition}`]">
+    <button :class="['vju-btn', `vju-btn-${iconPosition}`]" @click="handleClick">
         <div class="vju-btn-content">
             <slot></slot>
         </div>
@@ -28,6 +28,11 @@ export default {
         loading: {
             default: false,
             type: Boolean
+        }
+    },
+    methods: {
+        handleClick(event) {
+            this.$emit('click', event);
         }
     }
 };
