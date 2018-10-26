@@ -57,6 +57,12 @@
     <Modal v-model="modalVisible" title="这是标题!" @on-ok="handleOk" draggable>
         哈哈哈哈哈哈哈
     </Modal>
+
+    <Menu>
+        <MenuGroup title="设置">
+            123123
+        </MenuGroup>
+    </Menu>
 </div>
 </template>
 
@@ -71,10 +77,13 @@ import Select from '../components/select';
 import Cascader from '../components/Cascader';
 import Message from '../components/message';
 import Modal from '../components/modal';
+import Menu from '../components/menu';
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.ButtonGroup;
 const Option = Select.Option;
+
+const MenuGroup = Menu.MenuGroup;
 
 export default {
     name: 'Demo',
@@ -90,7 +99,9 @@ export default {
         Select: Select,
         Option: Option,
         Cascader,
-        Modal
+        Modal,
+        Menu,
+        MenuGroup,
     },
     data() {
         return {
