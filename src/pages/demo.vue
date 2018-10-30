@@ -60,8 +60,19 @@
 
     <Menu>
         <MenuGroup title="设置">
-            123123
+            <MenuItem>
+                <Icon name="setting"/>设置
+            </MenuItem>
         </MenuGroup>
+        <Submenu>
+            <template slot="title">
+                <Icon name="setting"/>Navigation One
+            </template>
+            <MenuGroup title="Item 1">
+                <MenuItem name="1-1">Option 1</MenuItem>
+                <MenuItem name="1-2">Option 2</MenuItem>
+            </MenuGroup>
+        </Submenu>
     </Menu>
 </div>
 </template>
@@ -84,6 +95,8 @@ const ButtonGroup = Button.ButtonGroup;
 const Option = Select.Option;
 
 const MenuGroup = Menu.MenuGroup;
+const MenuItem = Menu.MenuItem;
+const Submenu = Menu.Submenu;
 
 export default {
     name: 'Demo',
@@ -102,6 +115,8 @@ export default {
         Modal,
         Menu,
         MenuGroup,
+        MenuItem,
+        Submenu
     },
     data() {
         return {
