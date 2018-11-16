@@ -24,13 +24,12 @@ export default {
     directives: { clickoutside },
     props: {
         value: [String, Number],
-        label: [String, Number],
         placeholder: String
     },
     data() {
         return {
             selectedValue: this.value,
-            selectedLabel: this.label,
+            selectedLabel: '',
             visible: false
         };
     },
@@ -50,11 +49,6 @@ export default {
         handleClickOutside() {
             this.visible = false;
         }
-    },
-    mounted() {
-        // debugger;
-
-        var a = this;
     }
 };
 </script>
@@ -84,6 +78,7 @@ export default {
     border: 1px solid $border-color;
     border-radius: $border-radius;
     cursor: pointer;
+    font-size: 12px;
 
     &:hover,
     &:focus {

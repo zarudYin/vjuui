@@ -43,7 +43,8 @@
     <ButtonGroup style="margin-top: 5px;">
         <Button icon="setting" @click="showMsg">message</Button>
         <Button icon="setting" @click="showModal">modal</Button>
-        <Button icon="loading" icon-position="right" >按钮</Button>
+        <Button icon="loading" icon-position="right" @click="showLoadingBar">loading bar</Button>
+        <Button icon="loading" icon-position="right" @click="finishLoadingBar">finish bar</Button>
     </ButtonGroup>
 
     <Select @on-select="handleSelect" placeholder="please select">
@@ -58,7 +59,7 @@
         哈哈哈哈哈哈哈
     </Modal>
 
-    <Menu>
+    <!-- <Menu>
         <MenuGroup title="设置">
             <MenuItem>
                 <Icon name="setting"/>设置
@@ -73,7 +74,9 @@
                 <MenuItem name="1-2">Option 2</MenuItem>
             </MenuGroup>
         </Submenu>
-    </Menu>
+    </Menu> -->
+
+    <Page :total="300" @on-change="handlePageChange"/>
 </div>
 </template>
 
@@ -89,6 +92,8 @@ import Cascader from '../components/Cascader';
 import Message from '../components/message';
 import Modal from '../components/modal';
 import Menu from '../components/menu';
+import Page from '../components/page';
+import LoadingBar from '../components/loading-bar';
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.ButtonGroup;
@@ -116,7 +121,8 @@ export default {
         Menu,
         MenuGroup,
         MenuItem,
-        Submenu
+        Submenu,
+        Page
     },
     data() {
         return {
@@ -186,6 +192,15 @@ export default {
         },
         handleOk() {
             console.log('ok');
+        },
+        handlePageChange(pageIndex, pageSize) {
+            console.log(pageIndex, pageSize);
+        },
+        showLoadingBar() {
+            LoadingBar.start();
+        },
+        finishLoadingBar() {
+            LoadingBar.finish();
         }
     }
 };
