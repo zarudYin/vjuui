@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <div class="vju-loading-bar" v-show="visible">
-            <div class="vju-loading-bar-inner" :style="innerStyle"></div>
+            <div :class="innerClass" :style="innerStyle"></div>
         </div>
     </transition>
 </template>
@@ -9,15 +9,12 @@
 <script>
 export default {
     name: 'LoadingBar',
-    props: {
-        percent: {
-            type: Number,
-            default: 0
-        }
-    },
+    props: {},
     data() {
         return {
-            visible: false
+            percent: 0,
+            visible: false,
+            status: 'normal'
         };
     },
     computed: {
@@ -25,6 +22,15 @@ export default {
             return {
                 width: this.percent + '%'
             };
+        },
+        innerClass() {
+            return [
+                'vju-loading-bar-inner',
+                {
+                    'vju-loading-bar-inner-normal': this.status === 'normal',
+                    'vju-loading-bar-inner-error': this.status === 'error'
+                }
+            ];
         }
     },
     methods: {}
@@ -47,6 +53,13 @@ export default {
 .vju-loading-bar-inner {
     height: 100%;
     transition: width 0.2s linear;
-    background-color: #2d8cf0;
+}
+
+.vju-loading-bar-inner-normal {
+    background-color: $blue;
+}
+
+.vju-loading-bar-inner-error {
+    background-color: $red;
 }
 </style>

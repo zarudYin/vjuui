@@ -17,7 +17,7 @@ LoadingBar.newInstance = function(properties = {}) {
     return {
         component: loadingBar,
         update(props) {
-            let { percent, visible } = props;
+            let { percent, visible, status } = props;
 
             if (percent !== undefined) {
                 loadingBar.percent = percent;
@@ -25,9 +25,12 @@ LoadingBar.newInstance = function(properties = {}) {
             if (visible !== undefined) {
                 loadingBar.visible = visible;
             }
+            if (status !== undefined) {
+                loadingBar.status = status;
+            }
         },
-        destroy(element) {
-            document.body.removeChild(document.getElementsByClassName(element)[0]);
+        destroy() {
+            document.body.removeChild(loadingBar.$el);
         }
     };
 };

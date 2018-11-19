@@ -22,6 +22,10 @@ export default {
     name: 'Select',
     components: { Icon },
     directives: { clickoutside },
+    model: {
+        prop: 'value',
+        event: 'change'
+    },
     props: {
         value: [String, Number],
         placeholder: String
@@ -44,10 +48,24 @@ export default {
             this.selectedLabel = label;
             this.visible = false;
 
-            isEmit && this.$emit('on-select', option);
+            if (isEmit) {
+                this.$emit('on-select', option);
+                this.$emit('change', value);
+            }
         },
         handleClickOutside() {
             this.visible = false;
+        }
+    },
+    watch: {
+        value(val) {
+            this.selectedValue = val;
+
+            this.$children.forEach(child => {
+                if (child.value === val) {
+                    this.selectedLabel = child.$el.textContent;
+                }
+            });
         }
     }
 };

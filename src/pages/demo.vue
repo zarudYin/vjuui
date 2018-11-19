@@ -45,13 +45,16 @@
         <Button icon="setting" @click="showModal">modal</Button>
         <Button icon="loading" icon-position="right" @click="showLoadingBar">loading bar</Button>
         <Button icon="loading" icon-position="right" @click="finishLoadingBar">finish bar</Button>
+        <Button icon="loading" icon-position="right" @click="destroyLoadingBar">destroy bar</Button>
+        <Button icon="loading" icon-position="right" @click="errorLoadingBar">error bar</Button>
     </ButtonGroup>
 
-    <Select @on-select="handleSelect" placeholder="please select">
+    <Select v-model="selectValue" placeholder="please select">
         <Option value="1">哈哈哈</Option>
         <Option value="2">呵呵呵</Option>
         <Option value="3">嘿嘿嘿</Option>
     </Select>
+    <div>当前选中：{{selectValue}}</div>
 
     <Cascader :data="data" placeholder="please select"></Cascader>
 
@@ -77,6 +80,17 @@
     </Menu> -->
 
     <Page :total="300" @on-change="handlePageChange"/>
+
+    <Button icon="setting" @click="handleShowS">showSOrP</Button>
+    <keep-alive>
+        <Select :value="selectValue" v-if="isShowS" @on-select="handleSelect" placeholder="please select">
+            <Option value="1">哈哈哈</Option>
+            <Option value="2">呵呵呵</Option>
+            <Option value="3">嘿嘿嘿</Option>
+        </Select>
+
+        <Page v-else :total="300" @on-change="handlePageChange"/>
+    </keep-alive>
 </div>
 </template>
 
@@ -128,6 +142,8 @@ export default {
         return {
             val: '',
             modalVisible: false,
+            isShowS: true,
+            selectValue: undefined,
             data: [
                 {
                     value: 'beijing',
@@ -182,7 +198,8 @@ export default {
     },
     methods: {
         handleSelect(option) {
-            console.log(option);
+            // console.log(option);
+            this.selectValue = option.value;
         },
         showMsg() {
             Message.info('哈哈哈哈');
@@ -201,6 +218,15 @@ export default {
         },
         finishLoadingBar() {
             LoadingBar.finish();
+        },
+        destroyLoadingBar() {
+            LoadingBar.destroy();
+        },
+        errorLoadingBar() {
+            LoadingBar.error();
+        },
+        handleShowS() {
+            this.isShowS = !this.isShowS;
         }
     }
 };

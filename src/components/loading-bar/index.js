@@ -23,35 +23,45 @@ function hide() {
     }, 800);
 }
 
+function clearTimer() {
+    if (timer) {
+        clearTimeout(timer);
+        timer = null;
+    }
+}
+
 export default {
     start() {
         let percent = 0;
 
         if (timer) return;
 
-        update({
-            percent,
-            visible: true
-        });
+        update({ percent, visible: true, status: 'normal' });
 
         timer = setInterval(() => {
             percent += Math.floor(Math.random() * 3 + 5);
             if (percent > 95) {
                 clearTimer();
+                return;
             }
-            update({
-                percent,
-                visible: true
-            });
+            update({ percent, visible: true, status: 'normal' });
         }, 200);
     },
-    finish() {
-        if (timer) {
-            clearTimeout(timer);
-            timer = null;
-        }
-
-        update({ percent: 100 });
+    error() {
+        clearTimer();
+        update({ percent: 100, visible: true, status: 'error' });
         hide();
+    },
+    finish() {
+        clearTimer();
+        update({ percent: 100, visible: true, status: 'normal' });
+        hide();
+    },
+    destroy() {
+        clearTimer();
+        if (Instance) {
+            Instance.destroy();
+            Instance = null;
+        }
     }
 };
