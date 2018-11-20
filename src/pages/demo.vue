@@ -91,6 +91,18 @@
 
         <Page v-else :total="300" @on-change="handlePageChange"/>
     </keep-alive>
+
+    <Swiper>
+        <SwiperItem>
+            <div style="height: 200px;background: blue;">哈哈哈哈</div>
+        </SwiperItem>
+        <SwiperItem>
+            <div style="height: 200px;background: yellow;">呵呵呵呵</div>
+        </SwiperItem>
+        <SwiperItem>
+            <div style="height: 200px;background: red;">嘿嘿嘿嘿</div>
+        </SwiperItem>
+    </Swiper>
 </div>
 </template>
 
@@ -108,6 +120,7 @@ import Modal from '../components/modal';
 import Menu from '../components/menu';
 import Page from '../components/page';
 import LoadingBar from '../components/loading-bar';
+import Swiper from '../components/swiper';
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.ButtonGroup;
@@ -116,6 +129,8 @@ const Option = Select.Option;
 const MenuGroup = Menu.MenuGroup;
 const MenuItem = Menu.MenuItem;
 const Submenu = Menu.Submenu;
+
+const SwiperItem = Swiper.SwiperItem;
 
 export default {
     name: 'Demo',
@@ -136,7 +151,9 @@ export default {
         MenuGroup,
         MenuItem,
         Submenu,
-        Page
+        Page,
+        Swiper,
+        SwiperItem,
     },
     data() {
         return {
