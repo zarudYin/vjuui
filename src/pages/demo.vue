@@ -94,15 +94,35 @@
 
     <Swiper>
         <SwiperItem>
-            <div style="height: 200px;background: blue;">哈哈哈哈</div>
+            <div style="height: 200px;">哈哈哈哈</div>
         </SwiperItem>
         <SwiperItem>
-            <div style="height: 200px;background: yellow;">呵呵呵呵</div>
+            <div style="height: 200px;">呵呵呵呵</div>
         </SwiperItem>
         <SwiperItem>
-            <div style="height: 200px;background: red;">嘿嘿嘿嘿</div>
+            <div style="height: 200px;">嘿嘿嘿嘿</div>
         </SwiperItem>
     </Swiper>
+
+    <Checkbox label="哈哈哈" v-model="checkedValue"></Checkbox><span>value: {{checkedValue}}</span>
+
+    <CheckboxGroup v-model="checkedGroup" @on-change="handleCheckboxGroupChange">
+        <span><Button></Button><Button><Checkbox label="哈哈哈"></Checkbox></Button></span>
+        <Button><Checkbox label="呵呵呵"></Checkbox></Button>
+        <Checkbox label="嘿嘿嘿"></Checkbox>
+    </CheckboxGroup>
+    <span>{{checkedGroup}}</span>
+
+    <Radio label="哈哈哈"></Radio>
+
+    <RadioGroup v-model="radioValue">
+        <Radio label="哈哈哈"></Radio>
+        <Radio label="呵呵呵"></Radio>
+        <Radio label="嘿嘿嘿"></Radio>
+    </RadioGroup>
+    <span>{{radioValue}}</span>
+
+    <i-switch></i-switch>
 </div>
 </template>
 
@@ -121,6 +141,9 @@ import Menu from '../components/menu';
 import Page from '../components/page';
 import LoadingBar from '../components/loading-bar';
 import Swiper from '../components/swiper';
+import Checkbox from '../components/checkbox';
+import Radio from '../components/radio';
+import Switch from '../components/switch';
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.ButtonGroup;
@@ -131,6 +154,8 @@ const MenuItem = Menu.MenuItem;
 const Submenu = Menu.Submenu;
 
 const SwiperItem = Swiper.SwiperItem;
+const CheckboxGroup = Checkbox.CheckboxGroup;
+const RadioGroup = Radio.RadioGroup;
 
 export default {
     name: 'Demo',
@@ -154,6 +179,11 @@ export default {
         Page,
         Swiper,
         SwiperItem,
+        Checkbox,
+        CheckboxGroup,
+        Radio,
+        RadioGroup,
+        'i-switch': Switch,
     },
     data() {
         return {
@@ -161,6 +191,9 @@ export default {
             modalVisible: false,
             isShowS: true,
             selectValue: undefined,
+            checkedValue: false,
+            radioValue: '',
+            checkedGroup: ['哈哈哈'],
             data: [
                 {
                     value: 'beijing',
@@ -244,6 +277,9 @@ export default {
         },
         handleShowS() {
             this.isShowS = !this.isShowS;
+        },
+        handleCheckboxGroupChange(value) {
+            console.log(value);
         }
     }
 };

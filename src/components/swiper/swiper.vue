@@ -44,7 +44,7 @@ export default {
         },
         autoplay: {
             type: Boolean,
-            default: true
+            default: false
         },
         autoplaySpeed: {
             type: Number,
@@ -90,7 +90,11 @@ export default {
             this.offset = offset;
         }
     },
-    watch: {},
+    watch: {
+        value(val) {
+            this.offset = val;
+        }
+    },
     mounted() {
         let width = getStyle(this.$el, 'width');
         let swiperItem = this.$children.filter(child => child.$options.name === 'SwiperItem');
@@ -110,7 +114,7 @@ export default {
             }, this.autoplaySpeed);
         }
     },
-    destroyed() {
+    beforeDestroy() {
         if (this.timer) {
             clearTimeout(this.timer);
             this.timer = null;
