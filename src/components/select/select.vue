@@ -1,13 +1,14 @@
 <template>
     <div :class="['vju-select', {'vju-select-visible': visible}]" v-clickoutside="handleClickOutside">
         <div class="vju-select-value" @click="handleClick">
-            <input class="vju-select-input" readonly :placeholder="placeholder" v-model="selectedLabel" />
+            <input class="vju-select-input" ref="filterInput" :readonly="!filter" :placeholder="placeholder" v-model="selectedLabel" @input="handleFilter"/>
             <Icon name="moreunfold"></Icon>
         </div>
         <transition name="drop">
             <div class="vju-select-drop" v-show="visible">
                 <ul>
-                    <slot></slot>
+                    <FunctionalOption v-if="!isSelectOptionsEmpty" :slot-options="selectOptions"></FunctionalOption>
+                    <li class="vju-select-empty" v-if="isSelectOptionsEmpty">无匹配数据</li>
                 </ul>
             </div>
         </transition>
@@ -16,11 +17,12 @@
 
 <script>
 import Icon from '../icon';
+import FunctionalOption from './functional-option';
 import clickoutside from '../../directives/clickOutside.js';
 
 export default {
     name: 'Select',
-    components: { Icon },
+    components: { Icon, FunctionalOption },
     directives: { clickoutside },
     model: {
         prop: 'value',
@@ -28,14 +30,24 @@ export default {
     },
     props: {
         value: [String, Number],
-        placeholder: String
+        placeholder: String,
+        filter: {
+            type: Boolean | Function,
+            default: false
+        }
     },
     data() {
         return {
             selectedValue: this.value,
             selectedLabel: '',
-            visible: false
+            visible: false,
+            selectOptions: this.$slots.default
         };
+    },
+    computed: {
+        isSelectOptionsEmpty() {
+            return !(this.selectOptions && this.selectOptions.length);
+        }
     },
     methods: {
         handleClick() {
@@ -45,7 +57,7 @@ export default {
             let { value, label } = option;
 
             this.selectedValue = value;
-            this.selectedLabel = label;
+            this.tmpSelectedLabel = this.selectedLabel = label;
             this.visible = false;
 
             if (isEmit) {
@@ -54,18 +66,49 @@ export default {
             }
         },
         handleClickOutside() {
+            if (!this.visible) return;
+
             this.visible = false;
+            if (this.filter) {
+                this.selectedLabel = this.tmpSelectedLabel;
+            }
+            this.$nextTick(() => this.$refs.filterInput.focus());
+        },
+        validateOption(slotItem) {
+            if (!slotItem.tag.match(/option/i)) {
+                return false;
+            }
+
+            let { children = [], elm } = slotItem;
+
+            let textContent =
+                (elm && elm.textContent) ||
+                children.reduce((str, child) => {
+                    return str + (child.elm ? child.elm.textContent : child.text);
+                }, '');
+
+            return textContent.includes(this.selectedLabel);
+        },
+        handleFilter() {
+            this.selectOptions = this.$slots.default.filter(t => {
+                return t.componentOptions && this.validateOption(t.componentOptions);
+            });
+        },
+        setSelectedLabel() {
+            this.$children.filter(t => t.$options.name === 'Option').forEach(t => {
+                if (t.value === this.selectedValue) {
+                    this.tmpSelectedLabel = this.selectedLabel = t.$el.textContent;
+                }
+            });
         }
+    },
+    mounted() {
+        this.setSelectedLabel();
     },
     watch: {
         value(val) {
             this.selectedValue = val;
-
-            this.$children.forEach(child => {
-                if (child.value === val) {
-                    this.selectedLabel = child.$el.textContent;
-                }
-            });
+            this.setSelectedLabel();
         }
     }
 };
@@ -131,6 +174,13 @@ export default {
         list-style: none;
         padding: 0;
         margin: 0;
+    }
+
+    .vju-select-empty {
+        text-align: center;
+        color: #c5c8ce;
+        font-size: 12px;
+        list-style: none;
     }
 }
 </style>

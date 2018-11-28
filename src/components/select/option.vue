@@ -25,17 +25,6 @@ export default {
                 label: this.$el.textContent
             });
         }
-    },
-    mounted() {
-        if (this.$parent.selectedValue === this.value) {
-            this.$parent.handleSelect(
-                {
-                    value: this.value,
-                    label: this.$el.textContent
-                },
-                false
-            );
-        }
     }
 };
 </script>
