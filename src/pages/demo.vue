@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Button icon="setting" >按钮</Button>
+    <!-- <Button icon="setting" >按钮</Button>
     <Button icon="loading" icon-position="right" >按钮</Button>
     <Icon name="back" style="color: red;"></Icon>
     <Input v-model="val" /> <span>{{val}}</span>
@@ -47,9 +47,9 @@
         <Button icon="loading" icon-position="right" @click="finishLoadingBar">finish bar</Button>
         <Button icon="loading" icon-position="right" @click="destroyLoadingBar">destroy bar</Button>
         <Button icon="loading" icon-position="right" @click="errorLoadingBar">error bar</Button>
-    </ButtonGroup>
+    </ButtonGroup> -->
 
-    <Select v-model="selectValue" placeholder="please select">
+    <!-- <Select v-model="selectValue" placeholder="please select">
         <Option value="1">哈哈哈</Option>
         <Option value="2">呵呵呵</Option>
         <Option value="3">嘿嘿嘿</Option>
@@ -60,7 +60,7 @@
 
     <Modal v-model="modalVisible" title="这是标题!" @on-ok="handleOk" draggable>
         哈哈哈哈哈哈哈
-    </Modal>
+    </Modal> -->
 
     <!-- <Menu>
         <MenuGroup title="设置">
@@ -79,20 +79,26 @@
         </Submenu>
     </Menu> -->
 
-    <Page :total="300" @on-change="handlePageChange"/>
+    <!-- <Page :total="300" @on-change="handlePageChange"/>
 
-    <Button icon="setting" @click="handleShowS">showSOrP</Button>
-    <keep-alive>
-        <Select :value="selectValue" v-if="isShowS" @on-select="handleSelect" placeholder="please select">
+    <Button icon="setting" @click="handleShowS">showSOrP</Button> -->
+    <Select :value="selectValue" @on-select="handleSelect" placeholder="please select" :filter="true">
+            <Option value="1">哈哈哈</Option>
+            <Option value="2">呵呵呵</Option>
+            <Option value="3">嘿嘿嘿</Option>
+            <Option value="4">嚯嚯嚯</Option>
+        </Select>
+    <!-- <keep-alive>
+        <Select :value="selectValue" v-if="isShowS" @on-select="handleSelect" placeholder="please select" :filter="true">
             <Option value="1">哈哈哈</Option>
             <Option value="2">呵呵呵</Option>
             <Option value="3">嘿嘿嘿</Option>
         </Select>
 
         <Page v-else :total="300" @on-change="handlePageChange"/>
-    </keep-alive>
+    </keep-alive> -->
 
-    <Swiper>
+    <!-- <Swiper>
         <SwiperItem>
             <div style="height: 200px;">哈哈哈哈</div>
         </SwiperItem>
@@ -122,7 +128,17 @@
     </RadioGroup>
     <span>{{radioValue}}</span>
 
-    <i-switch></i-switch>
+    <i-switch>
+        <template slot="open">
+            <span>开</span>
+        </template>
+        <template slot="close">
+            <span>关</span>
+        </template>
+    </i-switch> -->
+
+    <AutoComplete v-model="autoValue" :data="autoData" @on-search="handleSearch" placeholder="please select"></AutoComplete>
+    <div>{{autoValue}}</div>
 </div>
 </template>
 
@@ -144,6 +160,7 @@ import Swiper from '../components/swiper';
 import Checkbox from '../components/checkbox';
 import Radio from '../components/radio';
 import Switch from '../components/switch';
+import AutoComplete from '../components/auto-complete';
 
 const TabPane = Tabs.TabPane;
 const ButtonGroup = Button.ButtonGroup;
@@ -183,14 +200,15 @@ export default {
         CheckboxGroup,
         Radio,
         RadioGroup,
-        'i-switch': Switch,
+        iSwitch: Switch,
+        AutoComplete
     },
     data() {
         return {
             val: '',
             modalVisible: false,
             isShowS: true,
-            selectValue: undefined,
+            selectValue: '2',
             checkedValue: false,
             radioValue: '',
             checkedGroup: ['哈哈哈'],
@@ -243,7 +261,9 @@ export default {
                         }
                     ]
                 }
-            ]
+            ],
+            autoData: [],
+            autoValue: ''
         };
     },
     methods: {
@@ -280,6 +300,9 @@ export default {
         },
         handleCheckboxGroupChange(value) {
             console.log(value);
+        },
+        handleSearch(val) {
+            this.autoData = val.includes('@') ? [val] : ['@qq.com', '@163.com'].map(t => val + t);
         }
     }
 };

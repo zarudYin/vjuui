@@ -1,13 +1,13 @@
 <template>
     <div :class="['vju-select', {'vju-select-visible': visible}]" v-clickoutside="handleClickOutside">
         <div class="vju-select-value" @click="handleClick">
-            <input class="vju-select-input" ref="filterInput" :readonly="!filter" :placeholder="placeholder" v-model="selectedLabel" @input="handleFilter"/>
+            <input class="vju-select-input" ref="filterInput" :readonly="!filter" :placeholder="placeholder" v-model="selectedLabel" @input="handleInput" />
             <Icon name="moreunfold"></Icon>
         </div>
         <transition name="drop">
             <div class="vju-select-drop" v-show="visible">
                 <ul>
-                    <FunctionalOption v-if="!isSelectOptionsEmpty" :slot-options="selectOptions"></FunctionalOption>
+                    <FunctionalOption v-if="!isSelectOptionsEmpty" :slot-options="selectOptions" :slot-update-hook="updateSlotOptions"></FunctionalOption>
                     <li class="vju-select-empty" v-if="isSelectOptionsEmpty">无匹配数据</li>
                 </ul>
             </div>
@@ -34,6 +34,10 @@ export default {
         filter: {
             type: Boolean | Function,
             default: false
+        },
+        autoComplete: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -41,12 +45,33 @@ export default {
             selectedValue: this.value,
             selectedLabel: '',
             visible: false,
-            selectOptions: this.$slots.default
+            slotOptions: this.$slots.default
         };
     },
     computed: {
         isSelectOptionsEmpty() {
             return !(this.selectOptions && this.selectOptions.length);
+        },
+        selectOptions() {
+            let selectOptions = [];
+
+            if (this.autoComplete) {
+                return this.slotOptions;
+            }
+
+            this.slotOptions.forEach(option => {
+                let cOptions = option.componentOptions;
+
+                if (!cOptions) return;
+
+                let optionPassesFilter = this.filter ? this.validateOption(cOptions) : option;
+
+                if (!optionPassesFilter) return;
+
+                selectOptions.push(option);
+            });
+
+            return selectOptions;
         }
     },
     methods: {
@@ -56,9 +81,9 @@ export default {
         handleSelect(option, isEmit = true) {
             let { value, label } = option;
 
+            this.visible = false;
             this.selectedValue = value;
             this.tmpSelectedLabel = this.selectedLabel = label;
-            this.visible = false;
 
             if (isEmit) {
                 this.$emit('on-select', option);
@@ -74,13 +99,7 @@ export default {
             }
             this.$nextTick(() => this.$refs.filterInput.focus());
         },
-        validateOption(slotItem) {
-            if (!slotItem.tag.match(/option/i)) {
-                return false;
-            }
-
-            let { children = [], elm } = slotItem;
-
+        validateOption({ children = [], elm }) {
             let textContent =
                 (elm && elm.textContent) ||
                 children.reduce((str, child) => {
@@ -89,10 +108,12 @@ export default {
 
             return textContent.includes(this.selectedLabel);
         },
-        handleFilter() {
-            this.selectOptions = this.$slots.default.filter(t => {
-                return t.componentOptions && this.validateOption(t.componentOptions);
-            });
+        handleInput(event) {
+            this.$emit('on-input', event);
+
+            if (!this.visible) {
+                this.visible = true;
+            }
         },
         setSelectedLabel() {
             this.$children.filter(t => t.$options.name === 'Option').forEach(t => {
@@ -100,15 +121,23 @@ export default {
                     this.tmpSelectedLabel = this.selectedLabel = t.$el.textContent;
                 }
             });
+        },
+        updateSlotOptions() {
+            this.slotOptions = this.$slots.default;
         }
     },
     mounted() {
         this.setSelectedLabel();
     },
+    updated() {
+        this.slotOptions = this.$slots.default;
+    },
     watch: {
         value(val) {
-            this.selectedValue = val;
-            this.setSelectedLabel();
+            if (val !== this.selectedValue) {
+                this.selectedValue = val;
+                this.setSelectedLabel();
+            }
         }
     }
 };
