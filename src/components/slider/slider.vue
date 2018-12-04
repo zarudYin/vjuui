@@ -1,5 +1,5 @@
 <template>
-    <div class="vju-slider" ref="slider">
+    <div class="vju-slider" ref="slider" @click="handleClick">
         <input type="hidden" />
         <div class="vju-slider-inner" :style="innerStyle"></div>
         <div class="vju-slider-bar-wrap" :style="barStyle">
@@ -57,8 +57,8 @@ export default {
                 left: ((this.currentValue - this.min) / this.rangeValue) * 100 + '%'
             };
         },
-        sliderWidth() {
-            return parseInt(getStyle(this.$refs.slider, 'width'));
+        sliderRect() {
+            return this.$refs.slider.getBoundingClientRect();
         }
     },
     methods: {
@@ -83,7 +83,7 @@ export default {
             window.addEventListener('mouseup', this.handleMouseup);
         },
         handleMousemove(event) {
-            let displacement = ((event.clientX - this.mousePosX) / this.sliderWidth) * this.rangeValue; // 位移量
+            let displacement = ((event.clientX - this.mousePosX) / this.sliderRect.width) * this.rangeValue; // 位移量
             let newValue = this.tmpCurrentValue + displacement;
 
             if (newValue < this.min) newValue = this.min;
@@ -99,6 +99,14 @@ export default {
 
             window.removeEventListener('mousemove', this.handleMousemove);
             window.removeEventListener('mouseup', this.handleMouseup);
+        },
+        handleClick(event) {
+            let newValue = ((event.clientX - this.sliderRect.left) / this.sliderRect.width) * this.rangeValue; // 位移量
+
+            if (newValue < this.min) newValue = this.min;
+            if (newValue > this.max) newValue = this.max;
+
+            this.currentValue = this.handleDecimal(newValue);
         }
     },
     watch: {
