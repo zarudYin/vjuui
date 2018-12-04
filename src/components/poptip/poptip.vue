@@ -28,8 +28,8 @@ export default {
         clickoutside
     },
     props: {
-        title: String,
-        content: String,
+        title: String | Number,
+        content: String | Number,
         trigger: {
             default: 'click',
             type: String,
@@ -97,7 +97,6 @@ export default {
 
 .vju-poptip-popper {
     position: absolute;
-    min-width: 150px;
     z-index: 1000;
 
     &[x-position^='bottom'] {

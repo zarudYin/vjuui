@@ -1,5 +1,5 @@
 <template>
-    <Poptip trigger="hover" :content="content" :position="position">
+    <Poptip trigger="hover" :content="content" :position="position" ref="poptip">
         <slot></slot>
         <template v-if="$slots.content" slot="content">
             <slot name="content"></slot>
@@ -16,7 +16,7 @@ export default {
         Poptip
     },
     props: {
-        content: String,
+        content: String | Number,
         position: {
             default: 'top',
             type: String,
@@ -27,6 +27,14 @@ export default {
     },
     data() {
         return {};
+    },
+    methods: {
+        show() {
+            this.$refs.poptip.visible = true;
+        },
+        hide() {
+            this.$refs.poptip.visible = false;
+        }
     }
 };
 </script>
